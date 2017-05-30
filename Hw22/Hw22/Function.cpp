@@ -140,71 +140,62 @@ using namespace std;
 //}
 
 //4
-void Create();
+int* Create(int &length);
 void Delete(int *arr, int &length);
 void Fill(int *arr, int &length);
 void COut(int *arr, int &length);
-void Increase(int *arr, int &length, int *tempArr);
+int* Increase(int *arr, int &length, int num);
 void Add(int *arr, int &length, int &num, int &index);
 void Remove(int *arr, int &length, int &index);
 
 void Function()
 {
 	srand(time(0));
-	char key;
+	int key, length = 0, num = 0, index;
+	int *arr;
 	while (true)
 	{
 		system("cls");
-		cout << "\t\tCreate array (Input 1)\n";
+		cout << "1 - create, 2 - fill, 3 - cout, 4 - delete, 5 - increase arr, 6 - add, 7 - remove\n";
 		key = getch();
 		if (key == '1')
-			Create();
-		else if (int(key) == 27)
-			break;
-	}
-}
-
-void Create()
-{
-	int key, length, num, index;
-	cout << "Enter size of array: ";
-	cin >> length;
-	int *arr = new int[length];
-	while (true)
-	{
-		system("cls");
-		cout << " 1 - fill, 2 - cout, 3 - delete, 4 - increase arr, 5 - add, 6 - remove\n";
-		key = getch();
-		if (key == '3')
-		{
-			Delete(arr, length);
-			break;
-		}
-		if (key == '1')
-			Fill(arr, length);
+			arr = Create(length);
 		if (key == '2')
+			Fill(arr, length);
+		if (key == '3')
 			COut(arr, length);
-		if (key == '4' || key == '5')
-		{
-			int *tempArr = new int[length + 1];
-			Increase(arr, length, tempArr);
-			arr = tempArr;
-		}
+		if (key == '4')
+			Delete(arr, length);
 		if (key == '5')
 		{
+			cin >> num;
+			arr = Increase(arr, length, num);
+		}
+		if (key == '6')
+		{
+			arr = Increase(arr, length, num);
 			cout << "Enter number and index of array : ";
 			cin >> num >> index;
 			index--;
 			Add(arr, length, num, index);
 		}
-		if (key == '6')
+		if (key == '7')
 		{
 			cout << "Enter index of array : ";
 			cin >> index;
 			index--;
 			Remove(arr, length, index);
 		}
+		if (key == 27 )
+			break;
 	}
+}
+
+int* Create(int &length)
+{
+	cin >> length;
+	int *arr = new int[length];
+	return arr;
 }
 
 void Delete(int *arr, int &length)
@@ -216,19 +207,19 @@ void Delete(int *arr, int &length)
 void Fill(int *arr, int &length)
 {
 	for (int i = 0; i < length; i++)
-	{
 		arr[i] = rand() % 20;
-	}
 }
 
-void Increase(int *arr, int &length, int *tempArr)
+int* Increase(int *arr, int &length, int num)
 {
-	length++;
-	for (int i = 0; i < length - 1; i++)
-	{
+	int *tempArr = new int[length + 1];
+	for (int i = 0; i < length; i++)
 		tempArr[i] = arr[i];
-	}
+	tempArr[length] = num;
 	delete[]arr;
+	arr = tempArr;
+	length++;
+	return arr;
 }
 
 void Add(int *arr, int &length, int &num, int &index)
@@ -261,6 +252,8 @@ void Remove(int *arr, int &length, int &index)
 			arr[i] = arr[i + 1];
 			arr[i + 1] = 0;
 		}
+		else if ( i == index && index == length - 1)
+			arr[i] = 0;
 	}
 }
 
