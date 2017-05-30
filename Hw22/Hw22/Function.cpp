@@ -156,7 +156,7 @@ void Function()
 	while (true)
 	{
 		system("cls");
-		cout << "1 - create, 2 - fill, 3 - cout, 4 - delete, 5 - increase arr, 6 - add, 7 - remove\n";
+		cout << "1 - create, 2 - fill, 3 - cout, 4 - delete, 5 - increase arr, 6 - add, 7 - remove, Esc - exit\n";
 		key = getch();
 		if (key == '1')
 			arr = Create(length);
@@ -194,13 +194,15 @@ void Function()
 int* Create(int &length)
 {
 	cin >> length;
-	int *arr = new int[length];
+	//int *arr = new int[length]; //new
+	int *arr = (int*)malloc(length * sizeof(int)); // malloc (C)
 	return arr;
 }
 
 void Delete(int *arr, int &length)
 {
-	delete[] arr;
+	//delete[] arr; //new
+	free(arr); // free (C)
 	length = 0;
 }
 
@@ -212,13 +214,18 @@ void Fill(int *arr, int &length)
 
 int* Increase(int *arr, int &length, int num)
 {
-	int *tempArr = new int[length + 1];
-	for (int i = 0; i < length; i++)
-		tempArr[i] = arr[i];
-	tempArr[length] = num;
-	delete[]arr;
-	arr = tempArr;
-	length++;
+	//int *tempArr = new int[length + 1]; //new
+	//for (int i = 0; i < length; i++)
+	//	tempArr[i] = arr[i];
+	//tempArr[length] = num;
+	//delete[]arr;
+	//arr = tempArr;
+	//length++;
+	//return arr;
+
+	//C
+	arr = (int*)realloc(arr, (++length) * sizeof(int));
+	arr[length - 1] = num;
 	return arr;
 }
 
